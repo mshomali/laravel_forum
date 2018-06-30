@@ -12,6 +12,7 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
        $threads = Thread::latest()->get();

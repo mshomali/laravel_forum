@@ -10,17 +10,31 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  * @property integer $id
- * @property string $title
- * @property string $body
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property string  $title
+ * @property string  $body
+ * @property Reply[] $Replies
+ * @property User    $Owner
+ * @property Carbon  $created_at
+ * @property Carbon  $updated_at
  *
  */
 class Thread extends Model
 {
+	protected $guarded = [];
+
 	//relations
 	public function replies()
 	{
 		return $this->hasMany(Reply::class);
-    }
+	}
+
+	public function owner()
+	{
+		return $this->belongsTo(User::class, 'user_id');
+	}
+
+	public function addReply($reply)
+	{
+		$this->replies()->create($reply);
+	}
 }

@@ -12,16 +12,18 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  * @property integer $id
  * @property integer $user_id
- * @property User $User
- * @property string $body
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property User    $Owner
+ * @property string  $body
+ * @property Carbon  $created_at
+ * @property Carbon  $updated_at
  */
 class Reply extends Model
 {
+	protected $guarded = [];
+
 	//relations
 	public function owner()
 	{
 		return $this->belongsTo(User::class, 'user_id');
-    }
+	}
 }

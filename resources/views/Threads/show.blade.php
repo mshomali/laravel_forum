@@ -40,6 +40,21 @@
             </div>
         </div>
 
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                @if(auth()->check())
+                    <form action="/threads/{{$thread->id}}/addReply" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="body">Body: </label>
+                            <textarea name="body" id="body" class="form-control"></textarea>
+                        </div>
 
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </form>
+                @endif
+            </div>
+        </div>
     </div>
 @endsection
