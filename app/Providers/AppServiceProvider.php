@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use function foo\func;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\View;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -15,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 		Schema::defaultStringLength(191);
+		View::composer('*', function($view) {
+			$view->with('channels', \App\Models\Channel::all());
+		});
     }
 
     /**

@@ -18,8 +18,9 @@ Route::get('/', function () {
 
 Route::get('/threads', 'ThreadsController@index')->name('threads');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
-Route::post('/threads', 'ThreadsController@store');
 Route::get('/threads/create', 'ThreadsController@create');
+Route::get('/threads/{channel}', 'ThreadsController@index');
+Route::post('/threads', 'ThreadsController@store');
 
 Route::post('/threads/{channel}/{thread}/addReply', 'RepliesController@store');
 

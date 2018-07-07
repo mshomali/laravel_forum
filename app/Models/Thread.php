@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Builder;
 
 /**
  * Class Thread
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon  $created_at
  * @property Carbon  $updated_at
  *
+ * Scopes:
+ * @method static Builder Mine()
  */
 class Thread extends Model
 {
@@ -48,5 +51,12 @@ class Thread extends Model
 	public function path()
 	{
 		return '/threads/' . $this->channel->name . '/' . $this->id;
+	}
+
+
+	//scopes
+	public function scopeMine(Builder $query, $user_id)
+	{
+		return $query->where('user_id', $user_id);
 	}
 }
