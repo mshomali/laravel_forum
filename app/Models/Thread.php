@@ -33,8 +33,20 @@ class Thread extends Model
 		return $this->belongsTo(User::class, 'user_id');
 	}
 
+	public function channel()
+	{
+		return $this->belongsTo(Channel::class);
+	}
+
+
+	// functions
 	public function addReply($reply)
 	{
 		$this->replies()->create($reply);
+	}
+
+	public function path()
+	{
+		return '/threads/' . $this->channel->name . '/' . $this->id;
 	}
 }
