@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Threads\ThreadStoreRequest;
+use App\Models\Channel;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
@@ -16,12 +19,25 @@ class ThreadsController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param Channel $channel
 	 * @return \Illuminate\Http\Response
 	 */
 
-	public function index()
+	public function index(Channel $channel)
 	{
-		$threads = Thread::latest()->get();
+		if($channel->exists) {
+			$threads = $channel->threads()->latest();
+		} else {
+			$threads = Thread::latest();
+		}
+
+		if($username = request('by')) {
+			/** @var User $user */
+			$user = User::where('name', $username)->firstOrFail();
+			$threads = $threads->where('user_id', $user->id);
+		}
+
+		$threads = $threads->get();
 		return view('threads.index')->with(['threads' => $threads]);
 	}
 
@@ -38,14 +54,14 @@ class ThreadsController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
+	 * @param  \App\Http\Requests\Threads\ThreadStoreRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(ThreadStoreRequest $request)
 	{
 		Thread::create([
 			'user_id'    => auth()->id(),
-			'channel_id' => 1, // Change it Temp
+			'channel_id' => $request->channel_id, // Change it Temp
 			'title'      => $request->title,
 			'body'       => $request->body,
 		]);
