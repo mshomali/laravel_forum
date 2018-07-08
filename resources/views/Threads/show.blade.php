@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header"> {{ $thread->title }} </div>
@@ -13,18 +13,15 @@
 
                     </div>
                 </div>
-            </div>
-        </div>
 
 
-        <br><br>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-
-                @foreach($thread->replies as $reply)
+                <br>
+                @php $replies = $thread->replies()->paginate(1); @endphp
+                @foreach($replies as $reply)
 
                     <div class="card">
-                        <div class="card-header"> {{ $reply->owner->name }} said {{ $reply->created_at->diffForHumans() }}</div>
+                        <div class="card-header"> {{ $reply->owner->name }}
+                            said {{ $reply->created_at->diffForHumans() }}</div>
 
                         <div class="card-body">
 
@@ -35,13 +32,9 @@
                     </div>
 
                 @endforeach
+                <br>
+                {{ $replies->links() }}
 
-
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
                 @if(auth()->check())
                     <form action="{{ $thread->path() }}/addReply" method="POST">
                         @csrf
@@ -55,6 +48,19 @@
                     </form>
                 @endif
             </div>
+
+            <div class="col-md-4">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <p>
+                            This thread was published {{ $thread->created_at->diffForHumans() }} by <a href="#"> {{ $thread->owner->name }}</a>, and currently has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies->count()) }}.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
+
 @endsection

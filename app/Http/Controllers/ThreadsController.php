@@ -25,16 +25,26 @@ class ThreadsController extends Controller
 
 	public function index(Channel $channel)
 	{
-		if($channel->exists) {
-			$threads = $channel->threads()->latest();
+
+		if ($channel->exists) {
+			$threads = $channel->threads();
 		} else {
-			$threads = Thread::latest();
+			$threads = Thread::query();
 		}
 
-		if($username = request('by')) {
+		$by = request('by');
+		$popular = request('popular');
+
+		if ($popular) {
+			$threads = $threads->orderBy('replies_count', 'desc');
+		} elseif ($by) {
+			$username = $by;
 			/** @var User $user */
 			$user = User::where('name', $username)->firstOrFail();
-			$threads = $threads->where('user_id', $user->id);
+			$threads = Thread::where('user_id', $user->id);
+			$threads = $threads->latest();
+		} else {
+			$threads = $threads->latest();
 		}
 
 		$threads = $threads->get();
