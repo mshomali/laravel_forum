@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $user_id
  * @property User    $Owner
  * @property string  $body
+ * @property Favorite[] $favorites
  * @property Carbon  $created_at
  * @property Carbon  $updated_at
  */
@@ -29,6 +30,13 @@ class Reply extends Model
 
 	public function favorites()
 	{
-		return $this->morphMany(Favorite::class, 'favorite_id');
+		return $this->morphMany(Favorite::class, 'favorite');
+	}
+
+
+	// Functions
+	public function isFavorited()
+	{
+		return $this->favorites()->where('user_id', auth()->id())->exists();
 	}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Reply;
+use function Couchbase\basicDecoderV1;
 use Illuminate\Http\Request;
 
 class FavoritesController extends Controller
@@ -17,14 +18,16 @@ class FavoritesController extends Controller
 
 	/**
 	 * @param Reply $reply
-	 *
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store(Reply $reply)
 	{
 		$reply->favorites()->create([
 			'user_id'        => auth()->id(),
-			'favorited_id'   => $reply->id,
-			'favorited_type' => get_class($reply),
+			'favorite_id'   => $reply->id,
+			'favorite_type' => get_class($reply),
 		]);
+
+		return back();
 	}
 }

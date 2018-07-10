@@ -18,10 +18,23 @@
                 <br>
                 @php $replies = $thread->replies()->paginate(1); @endphp
                 @foreach($replies as $reply)
-
+                    {{ dd($reply->favorites()) }}
                     <div class="card">
-                        <div class="card-header"> {{ $reply->owner->name }}
-                            said {{ $reply->created_at->diffForHumans() }}</div>
+                        <div class="card-header">
+                            <h5 style="display: flex; flex: 1;">
+                                <a href="#">
+                                    {{ $reply->owner->name }}
+                                </a> said {{ $reply->created_at->diffForHumans() }}
+                            </h5>
+                            <span style="float: right; margin-top: -30px; margin-right: 90px;">{{ $reply->Favorites()->count() }} {{ str_plural('favorite', $reply->Favorites()->count()) }}</span>
+                            <form action="/replies/{{ $reply->id }}/favorites" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-default" style="float: right; margin-top: -37px;" {{ $reply->isFavorited() ? 'disable' : '' }}>
+                                    Favorite
+                                </button>
+                            </form>
+                        </div>
+
 
                         <div class="card-body">
 
@@ -53,7 +66,9 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <p>
-                            This thread was published {{ $thread->created_at->diffForHumans() }} by <a href="#"> {{ $thread->owner->name }}</a>, and currently has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies->count()) }}.
+                            This thread was published {{ $thread->created_at->diffForHumans() }} by <a
+                                    href="#"> {{ $thread->owner->name }}</a>, and currently
+                            has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies->count()) }}.
                         </p>
                     </div>
                 </div>

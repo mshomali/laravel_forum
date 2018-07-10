@@ -17,12 +17,12 @@ class FavoritesTable extends Migration
 			$table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->unsignedInteger('favorited_id');
-			$table->foreign('favorited_id')->references('id')->on('replies');
-			$table->string('favorited_type', 50);
+			$table->unsignedInteger('favorite_id');
+			$table->foreign('favorite_id')->references('id')->on('replies');
+			$table->string('favorite_type', 50);
 			$table->timestamps();
 
-			$table->unique(['user_id', 'favorited_id', 'favorited_type']);
+			$table->unique(['user_id', 'favorite_id', 'favorite_type']);
 		});
 	}
 
