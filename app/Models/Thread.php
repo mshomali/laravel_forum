@@ -15,6 +15,7 @@ use PhpParser\Builder;
  * @property string  $body
  * @property Reply[] $Replies
  * @property User    $Owner
+ * @property integer $user_id
  * @property Carbon  $created_at
  * @property Carbon  $updated_at
  *

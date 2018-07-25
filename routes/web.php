@@ -18,12 +18,15 @@ Route::get('/', function () {
 
 Route::get('/threads', 'ThreadsController@index')->name('threads');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
+Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::get('/threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel}', 'ThreadsController@index');
 Route::post('/threads', 'ThreadsController@store');
 
 Route::post('/threads/{channel}/{thread}/addReply', 'RepliesController@store');
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store');
+
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 //Route::resource('threads', 'ThreadsController', [
 //	'names' => [
 //		'index' => 'threads',

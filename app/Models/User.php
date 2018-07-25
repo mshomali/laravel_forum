@@ -39,4 +39,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // Relations
+
+	public function threads()
+	{
+		return $this->hasMany(Thread::class)->latest();
+	}
+
+
+    // Functions
+	public function getRouteKeyName()
+	{
+		return 'name'; // username
+	}
 }

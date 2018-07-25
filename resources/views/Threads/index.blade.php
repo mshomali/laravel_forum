@@ -9,12 +9,12 @@
 
                     <div class="card-body">
 
-                        @foreach($threads as $thread)
+                        @forelse($threads as $thread)
 
                             <article>
                                 <div class="level" style="display: flex; align-items: center;">
 
-                                    <h4 style="flex: 1">
+                                    <h4 style="flex: 1"> <a href="{{ route('profile', $thread->owner->name) }}">{{ $thread->owner->name }}</a> posted:
                                         <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
                                     </h4>
                                     <strong>{{ $thread->replies->count() }} {{ str_plural('reply', $thread->replies->count()) }}</strong>
@@ -25,7 +25,9 @@
                             </article>
                             <hr>
 
-                        @endforeach
+                        @empty
+                            <p>There are no relevant results at this time.</p>
+                        @endforelse
 
                     </div>
                 </div>
