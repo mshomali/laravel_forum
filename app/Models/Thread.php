@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\RecordsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use PhpParser\Builder;
@@ -24,6 +25,8 @@ use PhpParser\Builder;
  */
 class Thread extends Model
 {
+	use RecordsActivity;
+
 	protected $guarded = [];
 
 
