@@ -11,21 +11,13 @@
                     </h1>
                 </div>
 
-                @foreach($threads as $thread)
+                @foreach($activities as $activity)
 
-                    <div class="card">
-                        <div class="card-header"> <h3 style="float: left;"><a href="{{$thread->path()}}">{{ $thread->title }}</a></h3>  <span style="float: right">{{ $thread->created_at->diffForHumans() }}</span></div>
-
-                        <div class="card-body">
-
-                            {{ $thread->body }}
-
-                        </div>
-                    </div>
+                    @include("Profiles.Activities." .  $activity->type)
 
                 @endforeach
 
-                {{ $threads->links() }}
+                {{--{{ $threads->links() }}--}}
             </div>
         </div>
     </div>

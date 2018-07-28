@@ -37,6 +37,11 @@ class Reply extends Model
 		return $this->morphMany(Favorite::class, 'favorite');
 	}
 
+	public function thread()
+	{
+		return $this->belongsTo(Thread::class);
+	}
+
 
 	// Functions
 	public function isFavorited()

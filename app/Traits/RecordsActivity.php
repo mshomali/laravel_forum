@@ -21,9 +21,6 @@ trait RecordsActivity
 				$model->recordActivity($event);
 			});
 		}
-		static::created(function ($thread) {
-			$thread->recordActivity('created');
-		});
 	}
 
 	protected function recordActivity($event)
