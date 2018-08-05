@@ -17,6 +17,16 @@
                                     <h4 style="flex: 1"> <a href="{{ route('profile', $thread->owner->name) }}">{{ $thread->owner->name }}</a> posted:
                                         <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
                                     </h4>
+
+                                    @can('update', $thread)
+                                        <form action="{{ $thread->path() }}" method="post" style="float: right;">
+                                            @csrf
+                                            {{ method_field('DELETE') }}
+
+                                            <button type="submit" class="btn btn-danger">Delete Thread</button>
+                                        </form>
+                                    @endcan
+
                                     <strong>{{ $thread->replies->count() }} {{ str_plural('reply', $thread->replies->count()) }}</strong>
                                 </div>
                                 <div class="body">{{ $thread->body }}</div>

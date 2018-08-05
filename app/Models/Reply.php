@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Model;
  * Class Reply
  *
  * @package App\Models
- * @property integer $id
- * @property integer $user_id
- * @property User    $Owner
- * @property string  $body
+ * @property integer    $id
+ * @property integer    $user_id
+ * @property User       $Owner
+ * @property string     $body
  * @property Favorite[] $favorites
- * @property Carbon  $created_at
- * @property Carbon  $updated_at
+ * @property Carbon     $created_at
+ * @property Carbon     $updated_at
  */
 class Reply extends Model
 {
@@ -34,7 +34,7 @@ class Reply extends Model
 
 	public function favorites()
 	{
-		return $this->morphMany(Favorite::class, 'favorite');
+		return $this->morphMany('App\Models\Favorite', 'favorite');
 	}
 
 	public function thread()
@@ -47,5 +47,10 @@ class Reply extends Model
 	public function isFavorited()
 	{
 		return $this->favorites()->where('user_id', auth()->id())->exists();
+	}
+
+	public function path()
+	{
+		return $this->thread->path() . "#reply-{$this->id}";
 	}
 }

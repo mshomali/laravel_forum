@@ -29,7 +29,7 @@
                 @php $replies = $thread->replies()->paginate(1); @endphp
                 @foreach($replies as $reply)
 
-                    <div class="card">
+                    <div class="card" id="reply-{{$reply->id}}">
                         <div class="card-header">
                             <h5 style="display: flex; flex: 1;">
                                 <a href="{{ route('profile', $reply->owner->name) }}">

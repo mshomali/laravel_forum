@@ -13,8 +13,9 @@
 
                 @foreach($activities as $activity)
 
-                    @include("Profiles.Activities." .  $activity->type)
-
+                    @if(view()->exists("profiles.Activities.{$activity->type}"))
+                        @include("Profiles.Activities." .  $activity->type)
+                    @endif
                 @endforeach
 
                 {{--{{ $threads->links() }}--}}
