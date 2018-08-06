@@ -52,6 +52,17 @@
 
                         </div>
 
+                        @can('update', $reply)
+                            <div class="card-footer">
+                                <form action="/replies/{{$reply->id}}" method="POST">
+                                    @csrf
+                                    {{method_field('DELETE')}}
+
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        @endcan
+
                     </div>
 
                 @endforeach

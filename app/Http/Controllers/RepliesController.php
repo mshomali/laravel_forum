@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -78,14 +83,23 @@ class RepliesController extends Controller
 		//
 	}
 
+
 	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\Models\Reply $reply
-	 * @return \Illuminate\Http\Response
+	 * @param Reply $reply
+	 * @return \Illuminate\Contracts\Routing\ResponseFactory|
+	 * \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+	 * @throws \Exception
 	 */
 	public function destroy(Reply $reply)
 	{
-		//
+		$this->authorize('update', $reply);
+
+		if($reply->favorites){
+			$reply->favorites()->delete();
+		}
+
+		$reply->delete();
+
+		return back();
 	}
 }
