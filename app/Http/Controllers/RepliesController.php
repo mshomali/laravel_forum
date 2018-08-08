@@ -71,18 +71,18 @@ class RepliesController extends Controller
 		//
 	}
 
+
 	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @param  \App\Models\Reply        $reply
-	 * @return \Illuminate\Http\Response
+	 * @param Request $request
+	 * @param Reply   $reply
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 */
 	public function update(Request $request, Reply $reply)
 	{
-		//
-	}
+		$this->authorize('update', $reply);
 
+		$reply->update(request(['body']));
+	}
 
 	/**
 	 * @param Reply $reply
@@ -99,6 +99,10 @@ class RepliesController extends Controller
 		}
 
 		$reply->delete();
+
+		if(request()->expectsJson()) {
+			return response(['status' => 'Reply deleted']);
+		}
 
 		return back();
 	}

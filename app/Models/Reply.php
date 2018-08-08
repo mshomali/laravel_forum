@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\RecordsActivity;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -21,10 +22,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reply extends Model
 {
-
+	// @todo Create Favorite Trait
 	use RecordsActivity;
 
 	protected $guarded = [];
+
+	protected $appends = ['favoritesCount', 'isFavorited'];
 
 	//relations
 	public function owner()
@@ -37,6 +40,22 @@ class Reply extends Model
 		return $this->morphMany('App\Models\Favorite', 'favorite');
 	}
 
+	public function favorite()
+	{
+		$attributes = ['user_id' => auth()->id()];
+
+		if (!$this->favorites()->where($attributes)->exists()) {
+			return $this->favorites()->create($attributes);
+		}
+	}
+
+	public function unFavorite()
+	{
+		$attributes = ['user_id' => auth()->id()];
+		$this->favorites()->get()->each->delete();
+
+	}
+
 	public function thread()
 	{
 		return $this->belongsTo(Thread::class);
@@ -47,6 +66,16 @@ class Reply extends Model
 	public function isFavorited()
 	{
 		return $this->favorites()->where('user_id', auth()->id())->exists();
+	}
+
+	public function getFavoritesCountAttribute()
+	{
+		return $this->favorites->count();
+	}
+
+	public function getIsFavoritedAttribute()
+	{
+		return $this->isFavorited();
 	}
 
 	public function path()

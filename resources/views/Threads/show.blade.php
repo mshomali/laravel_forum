@@ -23,47 +23,49 @@
 
                     </div>
                 </div>
-
-
                 <br>
-                @php $replies = $thread->replies()->paginate(1); @endphp
+
                 @foreach($replies as $reply)
 
-                    <div class="card" id="reply-{{$reply->id}}">
-                        <div class="card-header">
-                            <h5 style="display: flex; flex: 1;">
-                                <a href="{{ route('profile', $reply->owner->name) }}">
-                                    {{ $reply->owner->name }}
-                                </a> said {{ $reply->created_at->diffForHumans() }}
-                            </h5>
-                            <span style="float: right; margin-top: -30px; margin-right: 90px;">{{ $reply->Favorites()->count() }} {{ str_plural('favorite', $reply->Favorites()->count()) }}</span>
-                            <form action="/replies/{{ $reply->id }}/favorites" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-default" style="float: right; margin-top: -37px;" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                                    Favorite
-                                </button>
-                            </form>
-                        </div>
+                    <reply inline-template :attributes="{{$reply}}">
 
+                        <div class="card" id="reply-{{$reply->id}}">
+                            <div class="card-header">
+                                <h5 style="display: flex; flex: 1; float: left">
+                                    <a href="{{ route('profile', $reply->owner->name) }}">
+                                        {{ $reply->owner->name }}
+                                    </a> said {{ $reply->created_at->diffForHumans() }}
+                                </h5>
 
-                        <div class="card-body">
+                                <favorite :reply="{{ $reply }}"></favorite>
 
-                            {{ $reply->body }}
-
-                        </div>
-
-                        @can('update', $reply)
-                            <div class="card-footer">
-                                <form action="/replies/{{$reply->id}}" method="POST">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
                             </div>
-                        @endcan
 
-                    </div>
+
+                            <div class="card-body">
+                                <div v-if="editing">
+                                    <div class="form-group">
+                                        <textarea class="form-control" v-model="body">{{$reply->body}}</textarea>
+                                    </div>
+
+                                    <button class="btn btn-primary" @click="update">Update</button>
+                                    <button class="btn btn-warning" @click="editing=false">Cancel</button>
+
+                                </div>
+                                <div v-else v-text="body"></div>
+
+
+                            </div>
+
+                            @can('update', $reply)
+                                <div class="card-footer">
+                                    <button class="btn btn-primary" style="float: right" @click="editing = true">Edit</button>
+                                    <button type="submit" class="btn btn-danger" @click="destroy">Delete</button>
+                                </div>
+                            @endcan
+
+                        </div>
+                    </reply>
 
                 @endforeach
                 <br>
