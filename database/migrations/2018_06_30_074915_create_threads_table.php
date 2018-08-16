@@ -21,6 +21,7 @@ class CreateThreadsTable extends Migration
             $table->foreign('channel_id')->references('id')->on('channels');
             $table->string('title');
             $table->text('body');
+            $table->unsignedInteger('replies_count')->default(0);
             $table->timestamps();
         });
     }

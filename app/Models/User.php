@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notification;
 
 /**
  * Class User
@@ -53,7 +54,7 @@ class User extends Authenticatable
 	}
 
 
-    // Functions
+	// Functions
 	public function getRouteKeyName()
 	{
 		return 'name'; // username

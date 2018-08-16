@@ -34,6 +34,7 @@ class ThreadsController extends Controller
 
 		$by = request('by');
 		$popular = request('popular');
+		$unanswered = request('unanswered');
 
 		if ($popular) {
 			$threads = $threads->orderBy('replies_count', 'desc');
@@ -43,6 +44,8 @@ class ThreadsController extends Controller
 			$user = User::where('name', $username)->firstOrFail();
 			$threads = Thread::where('user_id', $user->id);
 			$threads = $threads->latest();
+		} elseif ($unanswered) {
+			$threads = $threads->where('replies_count', 0);
 		} else {
 			$threads = $threads->latest();
 		}
@@ -89,7 +92,7 @@ class ThreadsController extends Controller
 	{
 		return view('threads.show')
 			->with([
-				'thread' => $thread,
+				'thread'  => $thread,
 				'replies' => $thread->replies()->paginate(10),
 			]);
 	}

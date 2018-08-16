@@ -94,6 +94,8 @@ class RepliesController extends Controller
 	{
 		$this->authorize('update', $reply);
 
+		$reply->thread->decrement('replies_count');
+
 		if($reply->favorites){
 			$reply->favorites()->delete();
 		}

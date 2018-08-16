@@ -5,11 +5,12 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"> <h3 style="float: left"><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h3>
+                    <div class="card-header"><h3 style="float: left"><a
+                                    href="{{ $thread->path() }}">{{ $thread->title }}</a></h3>
 
                         @can('update', $thread)
                             <form action="{{ $thread->path() }}" method="post" style="float: right;">
-                                 @csrf
+                                @csrf
                                 {{ method_field('DELETE') }}
 
                                 <button type="submit" class="btn btn-danger">Delete Thread</button>
@@ -59,7 +60,8 @@
 
                             @can('update', $reply)
                                 <div class="card-footer">
-                                    <button class="btn btn-primary" style="float: right" @click="editing = true">Edit</button>
+                                    <button class="btn btn-primary" style="float: right" @click="editing = true">Edit
+                                    </button>
                                     <button type="submit" class="btn btn-danger" @click="destroy">Delete</button>
                                 </div>
                             @endcan
@@ -93,7 +95,24 @@
                                     href="#"> {{ $thread->owner->name }}</a>, and currently
                             has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies->count()) }}.
                         </p>
+
+                        @if(!$thread->isSubscribed)
+                            <p>
+                            <form action="{{ $thread->path() }}/subscription" method="POST">
+                                @csrf
+                                <button class="btn btn-primary" name="submit">Subscribe</button>
+                            </form>
+
+                        @else
+                            <form action="{{ $thread->path() }}/subscription" method="POST">
+                                @csrf
+                                {{method_field('delete')}}
+                                <button class="btn btn-warning" name="submit">UnSubscribe</button>
+                            </form>
+                            </p>
+                        @endif
                     </div>
+
                 </div>
 
             </div>

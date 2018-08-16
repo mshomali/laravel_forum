@@ -21,6 +21,7 @@
                             <a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">My Threads</a>
                         @endif
                         <a class="dropdown-item" href="/threads?popular=1">Popular Threads</a>
+                        <a class="dropdown-item" href="/threads?unanswered=1">Unanswered Thread</a>
                     </div>
                 </li>
 
@@ -55,6 +56,7 @@
                         <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                     </li>
                 @else
+                    <user-notifications user="{{ Auth::user()->name }}"></user-notifications>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>

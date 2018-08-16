@@ -11,6 +11,8 @@ class ReplySeeder extends Seeder
      */
     public function run()
     {
-       // factory(\App\Models\Reply::class, 50)->create();
+        factory(\App\Models\Reply::class, 50)->create()->each(function ($reply) {
+        	$reply->thread->increment('replies_count');
+		});
     }
 }

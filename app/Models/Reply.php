@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer    $user_id
  * @property User       $Owner
  * @property string     $body
+ * @property Thread     $thread
  * @property Favorite[] $favorites
  * @property Carbon     $created_at
  * @property Carbon     $updated_at
